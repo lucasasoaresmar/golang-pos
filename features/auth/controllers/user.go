@@ -56,6 +56,12 @@ func (uc *UserControllers) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if request.Email == "" || request.Password == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Must supply email and password"))
+		return
+	}
+
 	user, err := uc.UserRepository.GetByEmailAndPassword(request.Email, request.Password)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
